@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
-const mongoUri = "mongodb://localhost:27017/octofit_db";
-
-export async function connectDatabase(): Promise<typeof mongoose> {
-  return mongoose.connect(mongoUri);
-}
+export const connectDB = async () => {
+  try {
+    await mongoose.connect("mongodb://localhost:27017/octofit_db");
+    console.log("MongoDB Connected");
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+};
