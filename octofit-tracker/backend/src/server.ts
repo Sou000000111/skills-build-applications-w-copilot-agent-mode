@@ -1,16 +1,23 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import { registerApiRoutes } from './api';
 
 const app = express();
 const port = process.env.PORT || 8000;
+const codespaceName = process.env.CODESPACE_NAME;
+const baseUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : 'http://localhost:8000';
 
 app.use(cors());
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ status: 'ok', baseUrl });
 });
+
+registerApiRoutes(app);
 
 mongoose
   .connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db')
@@ -18,6 +25,7 @@ mongoose
     console.log('Connected to MongoDB');
     app.listen(port, () => {
       console.log(`Backend listening on port ${port}`);
+      console.log(`API base URL: ${baseUrl}`);
     });
   })
   .catch((error) => {
