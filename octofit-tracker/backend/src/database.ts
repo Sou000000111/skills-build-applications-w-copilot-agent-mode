@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
+const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/octofit_db";
 
 export async function connectDatabase(): Promise<typeof mongoose> {
   if (mongoose.connection.readyState >= 1) {
